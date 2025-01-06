@@ -13,7 +13,7 @@ const Panel: React.FC = () => {
 
     if (loading) {
       return (
-          <div className="flex flex-col items-center justify-center h-screen w-screen lg:ml-20 bg-gray-100">
+          <div className="flex flex-col items-center justify-center h-screen w-screen lg:ml-20">
               {/* Name or Title Above the Loading Bar */}
               <h3 className="text-3xl font-bold text-blue-500">kasa Family Hospital</h3>
               <h2 className="text-xl mb-4 text-black">
