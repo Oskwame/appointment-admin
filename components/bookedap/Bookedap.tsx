@@ -41,33 +41,27 @@ const Booked: React.FC = () => {
 
     fetchAppointments();
   }, []);
-
   const confirmAppointment = async (appointment: any) => {
     setLoading(true);
-
+  
     try {
-      const response = await fetch("/api/send-sms.ts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phone: appointment.phone,
-          message: `Hello ${appointment.name}, your appointment for ${appointment.service?.name || "this service"} on ${appointment.appointment_date} has been confirmed.`,
-        }),
-      });
-
-      if (!response.ok) {
-        const result = await response.json();
-        throw new Error(result.error || "Failed to send SMS. Please try again later.");
-      }
-
-      alert("SMS sent successfully!");
+      const { error } = await supabase
+        .from('appointment')
+        .update({ status: 'confirmed' })
+        .eq('id', appointment.id);
+  
+      if (error) throw error;
+  
+      alert("Appointment confirmed!");
+      setAppointments((prev) => prev.filter((a) => a.id !== appointment.id)); // Remove from booked list
     } catch (error) {
-      console.error("Error:", error);
-      alert(`An error occurred: ${(error as Error).message}`);
+      console.error("Error confirming appointment:", error);
+      alert("Failed to confirm the appointment.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   // Filter appointments based on the search term
   const filteredAppointments = appointments.filter(appointment =>

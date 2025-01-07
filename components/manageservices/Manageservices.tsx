@@ -31,12 +31,12 @@ const Service: React.FC = () => {
   };
 
   // Delete a service
-  const deleteService = async (id: number) => {
+  const deleteService = async (id: any) => {
     const confirmed = confirm("Are you sure you want to delete this service?");
     if (!confirmed) return;
-
+  
     try {
-      const { error } = await supabase.from("services").delete().eq("id", id);
+      const { error } = await supabase.from("services").delete().eq("id", id.toString());
       if (error) {
         console.error("Error deleting service:", error);
         alert("Failed to delete service");
@@ -49,6 +49,7 @@ const Service: React.FC = () => {
       alert("An error occurred while deleting the service.");
     }
   };
+  
 
 
   // Call fetchServices on component mount
