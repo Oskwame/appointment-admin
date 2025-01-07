@@ -1,5 +1,6 @@
 import React from "react";
-import { FaCogs, FaCalendarAlt, FaBell, FaCalendarCheck  } from 'react-icons/fa';
+import { FaCogs, FaCalendarAlt, FaBell, FaCalendarCheck,FaCalendarPlus   } from 'react-icons/fa';
+import { TbCalendarCog } from "react-icons/tb";
 
 const Panel: React.FC = () => {
   return (
@@ -26,6 +27,14 @@ const Panel: React.FC = () => {
               Manage Services
             </a>
           </li>
+
+          <li>
+            <a href="/manageDate" className="flex items-center px-3 py-3 hover:bg-blue-400">
+              <FaCalendarPlus className="mr-3 text-xl" />
+              Manage Appointment date
+            </a>
+          </li>
+
           <li>
             <a href="/alerts" className="flex items-center px-3 py-3 hover:bg-blue-400">
               <FaBell className="mr-3 text-xl" />
