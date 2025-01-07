@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabaseClient";
 import Panel from "@/components/panel/Panel";
+import { FaSpinner } from "react-icons/fa";
 
 const Booked: React.FC = () => {
   const router = useRouter();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     async function fetchAppointments() {
@@ -67,50 +69,57 @@ const Booked: React.FC = () => {
     }
   };
 
-  // display loading
-
-  // useEffect(() => {
-  //     const timeout = setTimeout(() => setLoading(false), 5000);
-  //     return () => clearTimeout(timeout); // Cleanup
-  // }, []);
-
-  // if (loading) {
-  //     return <div>please wait Loading...</div>; // Optional loading state
-  // }
+  // Filter appointments based on the search term
+  const filteredAppointments = appointments.filter(appointment =>
+    appointment.name.toLowerCase().includes(search.toLowerCase()) ||
+    appointment.email.toLowerCase().includes(search.toLowerCase()) ||
+    appointment.phone.toLowerCase().includes(search.toLowerCase()) ||
+    appointment.service?.name.toLowerCase().includes(search.toLowerCase()) ||
+    appointment.appointment_date.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="max-w-full w-full">
       <header className="bg-blue-400 text-white p-4 flex justify-center items-center fixed top-0 left-0 w-full z-10">
         <h1 className="text-2xl font-bold">Booked Appointments</h1>
+         {/* Search Bar */}
+         <div className="px-4 flex justify-end">
+          <input
+            type="text"
+            placeholder="Search appointments..."
+            className="px-2 py-2 border border-gray-400 rounded w-full text-black"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </header>
 
       <main className="mt-20">
-        <table className="min-w-full bg-white border border-gray-400">
-          <thead>
-            <tr>
-              <th className="border-2 border-gray-400 py-2 px-16 text-center">Name</th>
-              <th className="border-2 border-gray-400 py-2 px-7 text-center">Email</th>
-              <th className="border-2 border-gray-400 py-2 px-7 text-center">Phone</th>
-              <th className="border-2 border-gray-400 py-2 px-7 text-center">Service</th>
-              <th className="border-2 border-gray-400 py-2 px-20 text-center">Description</th>
-              <th className="border-2 border-gray-400 py-2 px-4 text-center">Appointment Date</th>
-              <th className="border-2 border-gray-400 py-2 px-4 text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-screen w-full lg:ml-52">
+            <FaSpinner className="animate-spin text-blue-500 text-4xl" />
+            <span className="ml-3 text-lg">Loading appointments...</span>
+          </div>
+        ) : filteredAppointments.length === 0 ? (
+          <div className="text-center py-4 lg:ml-[25rem]">No appointments found.</div>
+        ) : (
+          <table className="min-w-full bg-white border border-gray-400">
+            <thead>
               <tr>
-                <td colSpan={7} className="text-center py-4">Loading...</td>
+                <th className="border-2 border-gray-400 py-2 px-16 text-center">Name</th>
+                <th className="border-2 border-gray-400 py-2 px-7 text-center">Email</th>
+                <th className="border-2 border-gray-400 py-2 px-7 text-center">Phone</th>
+                <th className="border-2 border-gray-400 py-2 px-7 text-center">Service</th>
+                <th className="border-2 border-gray-400 py-2 px-16 text-center">Description</th>
+                <th className="border-2 border-gray-400 py-2 px-4 text-center">Appointment Date</th>
+                <th className="border-2 border-gray-400 py-2 px-4 text-center">Action</th>
               </tr>
-            ) : appointments.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="text-center py-4">No appointments found.</td>
-              </tr>
-            ) : (
-              appointments.map((appointment) => (
+            </thead>
+            <tbody>
+              {filteredAppointments.map((appointment) => (
                 <tr key={appointment.id}>
                   <td className="border-2 border-gray-300 py-2 px-1">{appointment.name}</td>
-                  <td className="border-2 border-gray-300 py-2 px-4">{appointment.email}</td>
+                  <td className="border-2 border-gray-300 py-2 px-1">{appointment.email}</td>
                   <td className="border-2 border-gray-300 py-2 px-4">{appointment.phone}</td>
                   <td className="border-2 border-gray-300 py-2 px-4">{appointment.service?.name || "N/A"}</td>
                   <td className="border-2 border-gray-300 py-2 px-4">{appointment.description}</td>
@@ -121,14 +130,19 @@ const Booked: React.FC = () => {
                       className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded disabled:bg-gray-400"
                       disabled={loading}
                     >
-                      {loading ? "Sending..." : "Confirm"}
+                      {loading ? (
+                        <FaSpinner className="animate-spin mr-2" />
+                      ) : (
+                        "Confirm"
+                      )}
+                      {loading && "Sending..."}
                     </button>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        )}
       </main>
     </div>
   );

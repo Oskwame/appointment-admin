@@ -3,16 +3,34 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff; /* Set permanent black background */
-  --foreground: #000000; /* Set white text for contrast */
+  --background-color: #ffffff; /* Light background */
+  --foreground-color: #000000; /* Dark text */
 }
 
 body {
-  color: var(--foreground); /* Use the white foreground color */
-  background: var(--background); /* Use the black background color */
+  color: var(--foreground-color); /* Set text color */
+  background: var(--background-color); /* Set background color */
   font-family: Arial, Helvetica, sans-serif;
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
-  height: 100%; /* Ensure body spans the full viewport */
-  width: 100%; /* Ensure body spans the full viewport */
+  height: 100vh; /* Ensure body spans the full viewport height */
+  width: 100%; /* Ensure body spans the full viewport width */
 }
+
+* {
+  box-sizing: border-box; /* Ensures padding and borders don't affect width/height */
+}
+
+@keyframes slide {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.animate-slide {
+  animation: slide 5s linear infinite;
+}
+

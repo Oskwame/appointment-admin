@@ -1,19 +1,19 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import Bookedap from "@/components/bookedap/Bookedap";
 import Panel from "@/components/panel/Panel";
 
-export default function Booked() {
+const Booked: React.FC = () => {
+  return (
+    <div className="flex">
+      {/* Sidebar Panel */}
+      <Panel />
 
+      {/* Main Content */}
+      <div className="pl-[13rem] flex-1">
+        <Bookedap />
+      </div>
+    </div>
+  );
+};
 
-    return (
-        <>
-            <Panel />
-
-            <div className="pl-[12rem]">
-                <Bookedap />
-            </div>
-        </>
-    );
-}
+export default Booked;
