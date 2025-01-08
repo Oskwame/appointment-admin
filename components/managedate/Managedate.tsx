@@ -82,7 +82,7 @@ const ManageDate: React.FC = () => {
   };
 
   return (
-    <div className="ml-10 mt-8">
+    <div className="ml-20 mt-8">
         <header className="z-10 top-0 left-0 flex fixed w-full justify-center p-4 bg-blue-400 text-white">
       <h1 className="text-2xl font-bold">Manage Appointment Dates</h1>
         </header>
@@ -110,7 +110,7 @@ const ManageDate: React.FC = () => {
           <tr>
             <th className="border border-gray-400 px-4 py-2">Date</th>
             <th className="border border-gray-400 px-4 py-2">Available</th>
-            <th className="border border-gray-400 px-4 py-2">Actions</th>
+            <th className="border border-gray-400 px-4 py-2 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>

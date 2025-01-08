@@ -27,7 +27,8 @@ const Booked: React.FC = () => {
             description,
             appointment_date,
             created_at
-          `);
+          `)
+          .eq('status','booked');
 
         if (error) throw error;
         setAppointments(data || []);
@@ -41,9 +42,9 @@ const Booked: React.FC = () => {
 
     fetchAppointments();
   }, []);
+
   const confirmAppointment = async (appointment: any) => {
     setLoading(true);
-  
     try {
       const { error } = await supabase
         .from('appointment')
